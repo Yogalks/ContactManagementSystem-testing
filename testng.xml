@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+<test name ="CMS">
+<classes>
+ 	  <class name="com.cms.tests.SignupTest"/>
+      <class name="com.cms.tests.LoginTest"/>
+      <class name="com.cms.tests.AddcontactTest"/>
+      <class name="com.cms.tests.EditContactTest"/>
+      <class name="com.cms.tests.DeleteContactTest"/>
+      <class name="com.cms.tests.SessionNavigationTest"/>
+      <class name="com.cms.tests.UIResponsiveTest"/>
+      <class name="com.cms.tests.ValidationTest"/>
+    </classes>
+  
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

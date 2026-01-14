@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="CMS(failed)">
+    <classes>
+      <class name="com.cms.tests.UIResponsiveTest">
+        <methods>
+          <include name="aftermethod"/>
+          <include name="testcase02"/>
+          <include name="beforesuite"/>
+          <include name="aftersuite"/>
+          <include name="beforemethod"/>
+        </methods>
+      </class> <!-- com.cms.tests.UIResponsiveTest -->
+      <class name="com.cms.tests.SessionNavigationTest">
+        <methods>
+          <include name="testcase03"/>
+          <include name="aftermethod"/>
+          <include name="beforesuite"/>
+          <include name="aftersuite"/>
+          <include name="beforemethod"/>
+        </methods>
+      </class> <!-- com.cms.tests.SessionNavigationTest -->
+      <class name="com.cms.tests.EditContactTest">
+        <methods>
+          <include name="aftermethod"/>
+          <include name="testcase03"/>
+          <include name="beforesuite"/>
+          <include name="aftersuite"/>
+          <include name="beforemethod"/>
+        </methods>
+      </class> <!-- com.cms.tests.EditContactTest -->
+      <class name="com.cms.tests.DeleteContactTest">
+        <methods>
+          <include name="testcase02"/>
+          <include name="aftermethod"/>
+          <include name="beforesuite"/>
+          <include name="aftersuite"/>
+          <include name="beforemethod"/>
+        </methods>
+      </class> <!-- com.cms.tests.DeleteContactTest -->
+    </classes>
+  </test> <!-- CMS(failed) -->
+</suite> <!-- Failed suite [Suite] -->
