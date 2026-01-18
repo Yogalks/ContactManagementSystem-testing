@@ -39,7 +39,12 @@
 			<artifactId>extentreports</artifactId>
 			<version>5.1.1</version>
 		</dependency>
-		
 
+
+        <dependency>
+        	<groupId>Guv20</groupId>
+        	<artifactId>GuvSel20</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

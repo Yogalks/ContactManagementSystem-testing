@@ -1,10 +1,18 @@
 package com.cms.base;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -106,4 +114,77 @@ public class BaseTest {
    }
    
    
-}
+   public static Object[][] getDataForTest(String sheetName, String testCase) {
+	   
+	   List<Object[]> dataList;
+
+       try {
+           FileInputStream fis = new FileInputStream(
+        		   System.getProperty("user.dir")+"/TestData.xlsx");
+
+           Workbook workbook = new XSSFWorkbook(fis);
+           Sheet sheet = workbook.getSheet(sheetName);
+
+           int colCount = sheet.getRow(0).getLastCellNum();
+           dataList = new ArrayList<>();
+
+           for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+               Row row = sheet.getRow(i);
+               
+               if(row==null)continue;
+               
+               Cell tccell = row.getCell(0);
+               if(tccell == null)continue;
+               if (row.getCell(0).toString().equalsIgnoreCase(testCase)) {
+
+                   Object[] rowData = new Object[colCount - 1];
+
+                   for (int j = 1; j < colCount; j++) {
+                	   
+                	   Cell cell = row.getCell(j);
+
+                       // Empty cell
+                       if (cell == null) {
+                           rowData[j - 1] = "";
+                       }
+                       else {
+                           String value = cell.toString().trim();
+
+                           // NULL keyword
+                           if (value.equalsIgnoreCase("NULL")) {
+                               rowData[j - 1] = null;
+                           }
+                           // EMPTY keyword
+                           else if (value.equalsIgnoreCase("EMPTY")) {
+                               rowData[j - 1] = "";
+                           }
+                           // Normal value
+                           else {
+                               rowData[j - 1] = value;
+                           }
+                       }
+                   }
+
+                   dataList.add(rowData);
+               }
+           }
+           
+       }catch (Exception e){
+    	   e.printStackTrace();
+    	   throw new RuntimeException("Error While reading excel data");
+    	   
+       }
+       finally {
+    	   
+       }
+
+           return dataList.toArray(new Object[0][0]);
+       
+       }
+       
+   }
+   
+
+
+

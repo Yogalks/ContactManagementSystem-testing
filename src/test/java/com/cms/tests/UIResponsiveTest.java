@@ -1,19 +1,32 @@
 package com.cms.tests;
 
+import java.lang.reflect.Method;
+
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.cms.base.BaseTest;
 import com.cms.pages.AddContactPage;
 import com.cms.start.Start;
 
 public class UIResponsiveTest extends Start{
+	
+	@DataProvider(name = "UIresponseData")
+	public Object[][] signupdata(Method method){
+		String testcase = method.getAnnotation(Test.class).testName();
+			return BaseTest.getDataForTest("UIresponseData", testcase);
+	
+	}
 
-	@Test
-	public void testcase01() {
+	@Test(testName="TC01", dataProvider="UIresponseData")
+	public void testcase01(String Username, String Password, String Firstname, String Lastname, 
+			String DOB, String Email, String Phno, String Street1, String Street2, String City, String State, 
+			String Postalcode, String Country) {
 		test=report.createTest("UI - alignment check");
 		AddContactPage acp = new AddContactPage();
 		acp.LoginSection();
-		acp.FeedInput01("yoga@test5.com");
-		acp.FeedInput02("Test@123");
+		acp.FeedInput01(Username);
+		acp.FeedInput02(Password);
 		acp.pagewait();
 		acp.addcontact();
 		acp.alignment();
@@ -22,26 +35,28 @@ public class UIResponsiveTest extends Start{
 	}
 	
 	//confirmmessage after contactadd - app not giving any confirmation message
-	@Test
-	public void testcase02() {
+	@Test(testName="TC02", dataProvider="UIresponseData")
+	public void testcase02(String Username, String Password, String Firstname, String Lastname, 
+			String DOB, String Email, String Phno, String Street1, String Street2, String City, String State, 
+			String Postalcode, String Country) {
 		test=report.createTest("UI - Confirm message");
 		AddContactPage acp = new AddContactPage();
 		acp.LoginSection();
-		acp.FeedInput01("yoga@test5.com");
-		acp.FeedInput02("Test@123");
+		acp.FeedInput01(Username);
+		acp.FeedInput02(Password);
 		acp.pagewait();
 		acp.addcontact();
-		acp.enterfirstname("Kannan");
-		acp.enterlastname("R");
-		acp.enterdob("1963-04-01");
-		acp.sendemail("kannan@test.com");
-		acp.sendphno("7357386282");
-		acp.sendstreet1("Lane 1");
-		acp.sendstreet2("Maraimalai nagar");
-		acp.sendcity("Chennai");
-		acp.sendstate("TamilNadu");
-		acp.sendpostalcode("600123");
-		acp.sendcountry("India");
+		acp.enterfirstname(Firstname);
+		acp.enterlastname(Lastname);
+		acp.enterdob(DOB);
+		acp.sendemail(Email);
+		acp.sendphno(Phno);
+		acp.sendstreet1(Street1);
+		acp.sendstreet2(Street2);
+		acp.sendcity(City);
+		acp.sendstate(State);
+		acp.sendpostalcode(Postalcode);
+		acp.sendcountry(Country);
 		acp.submitform();
 		captureScreenshot("UIResponse - test02");
 		test.fail("App not generating a confirmation message post contact added");

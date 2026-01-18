@@ -1,63 +1,72 @@
 package com.cms.tests;
 
+import java.lang.reflect.Method;
+
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.cms.base.BaseTest;
 import com.cms.pages.SessionNavigation;
 import com.cms.start.Start;
 
 public class SessionNavigationTest extends Start {
 	
+	@DataProvider(name = "SessionNavigationData")
+	public Object[][] signupdata(Method method){
+		String testcase = method.getAnnotation(Test.class).testName();
+			return BaseTest.getDataForTest("SessionNavigationData", testcase);
+	
+	}
+	
 	//Page redirect to login
-	@Test
-	public void testcase01() {
+	@Test(testName="TC01", dataProvider="SessionNavigationData")
+	public void testcase01(String Username, String Password, String Expectedtext, String ExpectedUrl) {
 		test=report.createTest("Session - Page redirect check");
 		SessionNavigation sn = new SessionNavigation();
 		sn.LoginSection();
-		sn.FeedInput01("yoga@test.com");
-		sn.FeedInput02("Test@123");
+		sn.FeedInput01(Username);
+		sn.FeedInput02(Password);
 		sn.pagewait();
 		sn.logoutvalidation();
 		String actualtext = sn.getpagetitle();
-		String expectedtext ="Contact List App";
-		Assert.assertTrue(actualtext.contains(expectedtext), "Page not redirected to Login page");
+		Assert.assertTrue(actualtext.contains(Expectedtext), "Page not redirected to Login page");
 		captureScreenshot("Session - test01");
 		test.pass("Page redirected as expected");
 
 	}
 	
 	//compare contact list after refresh
-	@Test
-	public void testcase02() {
+	@Test(testName="TC02", dataProvider="SessionNavigationData")
+	public void testcase02(String Username, String Password, String Expectedtext, String ExpectedUrl) {
 		test=report.createTest("Session - Compare contact list");
 		SessionNavigation sn = new SessionNavigation();
 		sn.LoginSection();
-		sn.FeedInput01("yoga@test5.com");
-		sn.FeedInput02("Test@123");
+		sn.FeedInput01(Username);
+		sn.FeedInput02(Password);
 		sn.pagewait();
 		sn.comparecontactlist();
 		captureScreenshot("Session - test02");
 		test.pass("Contact list remains same even after refresh ans user stays login");
 	}
 	
-	@Test
-	public void testcase03() {
+	@Test(testName="TC03", dataProvider="SessionNavigationData")
+	public void testcase03(String Username, String Password, String Expectedtext, String ExpectedUrl) {
 		test=report.createTest("Session - Page redirect without login");
 		SessionNavigation sn = new SessionNavigation();
 		String actualurl =sn.navigatewithoutlogin();
-		String expectedurl = "https://thinking-tester-contact-list.herokuapp.com/";
-		Assert.assertFalse(actualurl.equals(expectedurl), "Page getting directly navigated without login");
+		Assert.assertFalse(actualurl.equals(ExpectedUrl), "Page getting directly navigated without login");
 		captureScreenshot("Session - test03");
 		test.fail("Page directly heading to the contactlist without login");
 	}
 	
-	@Test
-	public void testcase04() {
+	@Test(testName="TC04", dataProvider="SessionNavigationData")
+	public void testcase04(String Username, String Password, String Expectedtext, String ExpectedUrl) {
 		test=report.createTest("Session - Page redirect after logout");
 		SessionNavigation sn = new SessionNavigation();
 		sn.LoginSection();
-		sn.FeedInput01("yoga@test.com");
-		sn.FeedInput02("Test@123");
+		sn.FeedInput01(Username);
+		sn.FeedInput02(Password);
 		sn.pagewait();
 		sn.logoutvalidation();
 		sn.getpagetitle();

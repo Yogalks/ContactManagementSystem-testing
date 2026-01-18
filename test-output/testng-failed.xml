@@ -3,24 +3,15 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.cms.tests.DeleteContactTest">
+      <class name="com.cms.tests.ValidationTest">
         <methods>
-          <include name="testcase02"/>
+          <include name="testcase01" invocation-numbers="0"/>
           <include name="aftermethod"/>
           <include name="beforesuite"/>
           <include name="aftersuite"/>
           <include name="beforemethod"/>
         </methods>
-      </class> <!-- com.cms.tests.DeleteContactTest -->
-      <class name="com.cms.tests.SessionNavigationTest">
-        <methods>
-          <include name="testcase03"/>
-          <include name="aftermethod"/>
-          <include name="beforesuite"/>
-          <include name="aftersuite"/>
-          <include name="beforemethod"/>
-        </methods>
-      </class> <!-- com.cms.tests.SessionNavigationTest -->
+      </class> <!-- com.cms.tests.ValidationTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -1,22 +1,32 @@
 package com.cms.tests;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.cms.base.BaseTest;
 import com.cms.pages.LoginPage;
 import com.cms.start.Start;
 
 public class LoginTest extends Start {
 	
+	@DataProvider(name = "LoginData")
+	public Object[][] signupdata(Method method){
+		String testcase = method.getAnnotation(Test.class).testName();
+			return BaseTest.getDataForTest("LoginData", testcase);
+	
+	}
+	
 	//valid credentials
-	@Test
-	public void testcase01() {
+	@Test(testName ="TC01", dataProvider = "LoginData")
+	public void testcase01(String Username, String Password) {
 		test=report.createTest("Login -Valid Credentials");
 		LoginPage lp = new LoginPage();
-		lp.FeedInput01("yoga@test.com");
-		lp.FeedInput02("Test@123");
+		lp.FeedInput01(Username);
+		lp.FeedInput02(Password);
 		lp.pagewait();
 		captureScreenshot("Login-test01");
 		test.pass("Login Successful");
@@ -24,12 +34,12 @@ public class LoginTest extends Start {
 	}
 	
 	//invalid password
-	@Test
-	public void testcase02() {
+	@Test(testName ="TC02", dataProvider = "LoginData")
+	public void testcase02(String Username, String Password) {
 		test=report.createTest("Login - Invalid Password");
 		LoginPage lp = new LoginPage();
-		lp.FeedInput01("yoga@test5.com");
-		lp.FeedInput02("Test");
+		lp.FeedInput01(Username);
+		lp.FeedInput02(Password);
 		String actualmsg= lp.ReadMessage();
 		String expectedmsg = "Incorrect username or password";
 		Assert.assertTrue(actualmsg.contains(expectedmsg), "Expected error msg not displayed");
@@ -38,12 +48,12 @@ public class LoginTest extends Start {
 	}
 	
 	//Empty values
-	@Test
-	public void testcase03() {
+	@Test(testName ="TC03", dataProvider = "LoginData")
+	public void testcase03(String Username, String Password) {
 		test=report.createTest("Login - Submitting with Empty values");
 		LoginPage lp = new LoginPage();
-		lp.FeedInput01("");
-		lp.FeedInput02("");
+		lp.FeedInput01(Username);
+		lp.FeedInput02(Password);
 		String actualmsg= lp.ReadMessage();
 		String expectedmsg = "Incorrect username or password";
 		Assert.assertTrue(actualmsg.contains(expectedmsg), "Expected error msg not displayed");
@@ -53,12 +63,12 @@ public class LoginTest extends Start {
 	}
 	
 	//Invalid emailid
-	@Test
-	public void testcase04() {
+	@Test(testName ="TC04", dataProvider = "LoginData")
+	public void testcase04(String Username, String Password) {
 		test=report.createTest("Login - Invalid email id check");
 		LoginPage lp=new LoginPage();
-		lp.FeedInput01("user.com");
-		lp.FeedInput02("Test@123");
+		lp.FeedInput01(Username);
+		lp.FeedInput02(Password);
 		String actualmsg = lp.ReadMessage();
 		String expectedmsg="Incorrect username or password";
 		Assert.assertTrue(actualmsg.contains(expectedmsg), "Expected error msg not displayed");
@@ -70,9 +80,7 @@ public class LoginTest extends Start {
 	@Test
 	public void testcase05() {
 		test=report.createTest("Login -  Password field masked check");
-		LoginPage lp = new LoginPage();
-		lp.FeedInput01("user.com");
-		lp.FeedInput02("yoga@test5.com");	
+		LoginPage lp = new LoginPage();	
 		lp.Passwordmasked();
 		captureScreenshot("Login-test05");
 		test.pass("Password field is masked");

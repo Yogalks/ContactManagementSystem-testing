@@ -1,23 +1,34 @@
 package com.cms.tests;
 
+import java.lang.reflect.Method;
+
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.cms.base.BaseTest;
 import com.cms.pages.SignupPage;
 import com.cms.start.Start;
 
 public class SignupTest extends Start {
 	
+	@DataProvider(name = "SignupData")
+	public Object[][] signupdata(Method method){
+		String testcase = method.getAnnotation(Test.class).testName();
+			return BaseTest.getDataForTest("SignupData", testcase);
+	
+	}
+	
 	//Valid values
-	@Test
-	public void testcase01() {
+	@Test(testName ="TC01", dataProvider = "SignupData")
+	public void testcase01(String FirstName, String LastName, String Email, String Password) {
 		test=report.createTest("Signup -Valid values");
 		SignupPage sp = new SignupPage();
 		sp.Signupsession();
-		sp.enterfirstname("Yoga5");
-		sp.enterlastname("Lakshmi");
-		sp.enteremail("yoga@test6.com");
-		sp.enterpassword("Test@123");
+		sp.enterfirstname(FirstName);
+		sp.enterlastname(LastName);
+		sp.enteremail(Email);
+		sp.enterpassword(Password);
 		sp.clicksubmit();
 		sp.pagewait();
 		captureScreenshot("Signup-test01");
@@ -25,15 +36,15 @@ public class SignupTest extends Start {
 	}
 	
 	//Already registered emailid
-	@Test
-	public void testcase02() {
+	@Test(testName ="TC02", dataProvider = "SignupData")
+	public void testcase02(String FirstName, String LastName, String Email, String Password) {
 		test=report.createTest("Signup -Already registered email");
 		SignupPage sp = new SignupPage();
 		sp.Signupsession();
-		sp.enterfirstname("Yoga2");
-		sp.enterlastname("Lakshmi");
-		sp.enteremail("yoga@test6.com");
-		sp.enterpassword("Test@123");
+		sp.enterfirstname(FirstName);
+		sp.enterlastname(LastName);
+		sp.enteremail(Email);
+		sp.enterpassword(Password);
 		sp.clicksubmit();
 		String actualmsg= sp.ReadMessage();
 		String expectedmsg = "Email address is already in use";
@@ -43,15 +54,15 @@ public class SignupTest extends Start {
 	}
 	
 	//empty values
-	@Test
-	public void testcase03() {
-		test=report.createTest("Signup - emplty values");
+	@Test(testName ="TC03", dataProvider = "SignupData")
+	public void testcase03(String FirstName, String LastName, String Email, String Password) {
+		test=report.createTest("Signup - empty values");
 		SignupPage sp = new SignupPage();
 		sp.Signupsession();
-		sp.enterfirstname("");
-		sp.enterlastname("");
-		sp.enteremail("");
-		sp.enterpassword("");
+		sp.enterfirstname(FirstName);
+		sp.enterlastname(LastName);
+		sp.enteremail(Email);
+		sp.enterpassword(Password);
 		sp.clicksubmit();
 		String actualmsg= sp.ReadMessage();
 		String expectedmsg = "User validation failed";
@@ -61,15 +72,15 @@ public class SignupTest extends Start {
 	}
 	
 	//incorrect password
-	@Test
-	public void testcase04() {
+	@Test(testName ="TC04", dataProvider = "SignupData")
+	public void testcase04(String FirstName, String LastName, String Email, String Password) {
 		test=report.createTest("Signup - Incorrect Password");
 		SignupPage sp = new SignupPage();
 		sp.Signupsession();
-		sp.enterfirstname("Yoga2");
-		sp.enterlastname("Lakshmi");
-		sp.enteremail("yoga@test2.com");
-		sp.enterpassword("Test@123&Test*765");
+		sp.enterfirstname(FirstName);
+		sp.enterlastname(LastName);
+		sp.enteremail(Email);
+		sp.enterpassword(Password);
 		sp.clicksubmit();
 		String actualmsg= sp.ReadMessage();
 		String expectedmsg = "Email address is already in use";
@@ -79,15 +90,15 @@ public class SignupTest extends Start {
 	}
 	
 	//invalid emailid
-	@Test
-	public void testcase05() {
+	@Test(testName="TC05", dataProvider ="SignupData")
+	public void testcase05(String FirstName, String LastName, String Email, String Password) {
 		test=report.createTest("Signup - Invalid emailid");
 		SignupPage sp = new SignupPage();
 		sp.Signupsession();
-		sp.enterfirstname("Yoga2");
-		sp.enterlastname("Lakshmi");
-		sp.enteremail("name@name");
-		sp.enterpassword("Test@123");
+		sp.enterfirstname(FirstName);
+		sp.enterlastname(LastName);
+		sp.enteremail(Email);
+		sp.enterpassword(Password);
 		sp.clicksubmit();
 		String actualmsg= sp.ReadMessage();
 		String expectedmsg = "Email is invalid";
